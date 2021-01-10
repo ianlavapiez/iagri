@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import CountDown from "react-native-countdown-component";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { category } from "../data/category";
 
 const QuizScreen = ({ navigation }) => {

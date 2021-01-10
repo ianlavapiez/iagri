@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const ScoreScreen = ({ navigation }) => {
   const score = navigation.state.params.score;
