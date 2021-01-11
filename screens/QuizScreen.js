@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import CountDown from "react-native-countdown-component";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import randomWords from "random-words";
 import { category } from "../data/category";
 
 const QuizScreen = ({ navigation }) => {
@@ -44,12 +44,20 @@ const QuizScreen = ({ navigation }) => {
   useEffect(() => {}, [count]);
 
   const checkAnswer = () => {
+    const words = randomWords({ exactly: 15, join: " " });
+
     if (answer === question[count].answer) {
       setScore(score + 1);
 
-      alert("Your answer is correct!");
+      alert("Your answer is correct! The meaning of the answer is " + words + ".");
     } else {
-      alert("Your answer is wrong! The correct answer is " + question[count].answer.toUpperCase() + ".");
+      alert(
+        "Your answer is wrong! The correct answer is " +
+          question[count].answer.toUpperCase() +
+          ". The meaning of the answer is " +
+          words +
+          "."
+      );
     }
 
     setTimerVisible(false);
