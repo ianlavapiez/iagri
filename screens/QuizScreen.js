@@ -49,12 +49,12 @@ const QuizScreen = ({ navigation }) => {
     if (answer === question[count].answer) {
       setScore(score + 1);
 
-      alert("Your answer is correct! The meaning of the answer is " + words + ".");
+      alert("Your answer is correct!\n\nThe meaning of the answer is " + words + ".");
     } else {
       alert(
         "Your answer is wrong! The correct answer is " +
           question[count].answer.toUpperCase() +
-          ". The meaning of the answer is " +
+          ". \n\nThe meaning of the answer is " +
           words +
           "."
       );
