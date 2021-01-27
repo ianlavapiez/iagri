@@ -1,7 +1,7 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-
+import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MenuScreen from "./screens/MenuScreen";
 import QuizScreen from "./screens/QuizScreen";
@@ -32,6 +32,12 @@ const navigator = createStackNavigator(
       screen: ScoreScreen,
       navigationOptions: {
         title: "Score",
+      },
+    },
+    History: {
+      screen: HistoryScreen,
+      navigationOptions: {
+        title: "History",
       },
     },
   },

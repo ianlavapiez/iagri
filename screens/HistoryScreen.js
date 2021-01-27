@@ -1,14 +1,12 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const ScoreScreen = ({ navigation }) => {
-  const score = navigation.state.params.score;
+const HistoryScreen = ({ navigation }) => {
+  const history = navigation.state.params.history;
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/trophy.png")} />
-      <Text style={styles.description}>Your Total Score</Text>
-      <Text style={styles.title}>{score}</Text>
+      <Text style={styles.description}>View History</Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Menu")}>
         <Text style={styles.buttonText}>Go Back to Main Menu</Text>
       </TouchableOpacity>
@@ -64,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScoreScreen;
+export default HistoryScreen;

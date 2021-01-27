@@ -1,82 +1,135 @@
-import React from "react";
-import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { category } from "../data/category";
+import React, { useEffect, useState } from "react";
+import * as FileSystem from "expo-file-system";
+import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import * as SQLite from "expo-sqlite";
+import { Asset } from "expo-asset";
 import agriculturalEconomicsArray from "../data/agriculturalEconomicsArray";
-import agriculturalExtensionArray from "../data/agriculturalExtensionArray";
-import animalScienceArray from "../data/animalScienceArray";
-import cropProtectionArray from "../data/cropProtectionArray";
 import cropScienceArray from "../data/cropScienceArray";
-import soilScienceArray from "../data/soilScienceArray";
+import { category } from "../data/category";
 
 const MenuScreen = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  // const [agriculturalEconomicsArray, setAgriculturalEconomicsArray] = useState([]);
+  // const [agriculturalExtensionArray, setAgriculturalExtensionArray] = useState([]);
+  // const [animalScienceArray, setAnimalScienceArray] = useState([]);
+  // const [cropProtectionArray, setCropProtectionArray] = useState([]);
+  // const [cropScienceArray, setCropScienceArray] = useState([]);
+  // const [soilScienceArray, setSoilScienceArray] = useState([]);
+
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
 
-    return array;
+    return array.slice(0, 5);
   };
+
+  const gameMode = (name, quiz) => {
+    Alert.alert(
+      "Game Mode",
+      "Do you want to use time trial?",
+      [
+        {
+          text: "Yes",
+          onPress: () => navigation.navigate("Quiz", { name, quiz, timeTrial: true }),
+          style: "cancel",
+        },
+        { text: "No", onPress: () => navigation.navigate("Quiz", { name, quiz, timeTrial: false }), style: "cancel" },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  // useEffect(() => {
+  //   async function openDatabase() {
+  //     if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite")).exists) {
+  //       await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite");
+  //     }
+  //     await FileSystem.downloadAsync(
+  //       Asset.fromModule(require("../assets/database/iagri.sqlite3")).uri,
+  //       FileSystem.documentDirectory + "SQLite/iagri.db"
+  //     );
+
+  //     db = SQLite.openDatabase("iagri.db");
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql(`select * from agriculturaleconomics;`, [0], (_, { rows: { _array } }) =>
+  //         setAgriculturalEconomicsArray(_array)
+  //       );
+  //     });
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql(`select * from agriculturalextension;`, [0], (_, { rows: { _array } }) =>
+  //         setAgriculturalExtensionArray(_array)
+  //       );
+  //     });
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql(`select * from animalscience;`, [0], (_, { rows: { _array } }) => setAnimalScienceArray(_array));
+  //     });
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql(`select * from cropprotection;`, [0], (_, { rows: { _array } }) =>
+  //         setCropProtectionArray(_array)
+  //       );
+  //     });
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql(`select * from cropscience;`, [0], (_, { rows: { _array } }) => setCropScienceArray(_array));
+  //     });
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql(`select * from soilscience;`, [0], (_, { rows: { _array } }) => setSoilScienceArray(_array));
+  //     });
+
+  //     return db;
+  //   }
+
+  //   openDatabase();
+  // }, []);
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Quiz", { name: category.cropScience, quiz: shuffleArray(cropScienceArray) })
-          }
+          onPress={() => gameMode(category.cropScience, shuffleArray(cropScienceArray))}
         >
           <Image style={styles.logo} source={require("../assets/crops.png")} />
           <Text>{category.cropScience}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Quiz", { name: category.animalScience, quiz: shuffleArray(animalScienceArray) })
-          }
+          onPress={() => gameMode(category.animalScience, shuffleArray(animalScienceArray))}
         >
           <Image style={styles.logo} source={require("../assets/pawprint.png")} />
           <Text>{category.animalScience}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Quiz", { name: category.soilScience, quiz: shuffleArray(soilScienceArray) })
-          }
+          onPress={() => gameMode(category.soilScience, shuffleArray(soilScienceArray))}
         >
           <Image style={styles.logo} source={require("../assets/plant.png")} />
           <Text>{category.soilScience}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Quiz", {
-              name: category.cropProtection,
-              quiz: shuffleArray(cropProtectionArray),
-            })
-          }
+          onPress={() => gameMode(category.cropProtection, shuffleArray(cropProtectionArray))}
         >
           <Image style={styles.logo} source={require("../assets/protect.png")} />
           <Text>{category.cropProtection}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Quiz", { name: category.economics, quiz: shuffleArray(agriculturalEconomicsArray) })
-          }
+          onPress={() => gameMode(category.economics, shuffleArray(agriculturalEconomicsArray))}
         >
           <Image style={styles.logo} source={require("../assets/megaphone.png")} />
           <Text>{category.economics}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Quiz", {
-              name: category.communication,
-              quiz: shuffleArray(agriculturalExtensionArray),
-            })
-          }
+          onPress={() => gameMode(category.communication, shuffleArray(agriculturalExtensionArray))}
         >
           <Image style={styles.logo} source={require("../assets/chat.png")} />
           <Text>{category.communication}</Text>

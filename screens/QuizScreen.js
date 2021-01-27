@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import CountDown from "react-native-countdown-component";
 import randomWords from "random-words";
 import { category } from "../data/category";
@@ -7,6 +7,7 @@ import { category } from "../data/category";
 const QuizScreen = ({ navigation }) => {
   const quizName = navigation.state.params.name;
   const quiz = navigation.state.params.quiz;
+  const timeTrial = navigation.state.params.timeTrial;
 
   const [question, setQuestion] = useState();
   const [answer, setAnswer] = useState("");
@@ -14,6 +15,7 @@ const QuizScreen = ({ navigation }) => {
   const [totalScore, setTotalScore] = useState(0);
   const [count, setCount] = useState(0);
   const [timerVisible, setTimerVisible] = useState(false);
+  const [isNext, setIsNext] = useState(false);
 
   useEffect(() => {
     if (quizName === category.cropScience) {
@@ -46,12 +48,13 @@ const QuizScreen = ({ navigation }) => {
   const checkAnswer = () => {
     const words = randomWords({ exactly: 15, join: " " });
 
-    if (answer === question[count].answer) {
+    if (answer.toLowerCase() === question[count].answer.toLowerCase()) {
       setScore(score + 1);
 
-      alert("Your answer is correct!\n\nThe meaning of the answer is " + words + ".");
+      Alert.alert("Correct!", "Your answer is correct!\n\nThe meaning of the answer is " + words + ".");
     } else {
-      alert(
+      Alert.alert(
+        "Wrong!",
         "Your answer is wrong! The correct answer is " +
           question[count].answer.toUpperCase() +
           ". \n\nThe meaning of the answer is " +
@@ -63,10 +66,41 @@ const QuizScreen = ({ navigation }) => {
     setTimerVisible(false);
   };
 
+  const checkNoTrialAnswer = () => {
+    const words = randomWords({ exactly: 15, join: " " });
+
+    if (answer.toLowerCase() === question[count].answer.toLowerCase()) {
+      setScore(score + 1);
+
+      Alert.alert("Correct!", "Your answer is correct!\n\nThe meaning of the answer is " + words + ".");
+    } else {
+      Alert.alert(
+        "Wrong!",
+        "Your answer is wrong! The correct answer is " +
+          question[count].answer.toUpperCase() +
+          ". \n\nThe meaning of the answer is " +
+          words +
+          "."
+      );
+    }
+
+    setIsNext(true);
+  };
+
   const nextQuestion = () => {
     if (question.length > count + 1) {
       setCount(count + 1);
       setTimerVisible(true);
+      return setAnswer("");
+    }
+
+    return navigation.navigate("Score", { score: score + " / " + totalScore });
+  };
+
+  const nextNoTrialQuestion = () => {
+    if (question.length > count + 1) {
+      setCount(count + 1);
+      setIsNext(false);
       return setAnswer("");
     }
 
@@ -87,6 +121,24 @@ const QuizScreen = ({ navigation }) => {
     );
   };
 
+  const submitAnswer = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={() => checkNoTrialAnswer()}>
+        <Text style={styles.buttonText}>Submit Answer</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const showNoTrialResult = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={() => nextNoTrialQuestion()}>
+        <Text style={styles.buttonText}>
+          {question ? (question.length === count + 1 ? "See Results" : "Next Question") : "Next Question"}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -95,180 +147,358 @@ const QuizScreen = ({ navigation }) => {
           <Text style={styles.questionHeader}>Question #{count + 1}</Text>
           <Text style={styles.questionText}>{question ? question[count].question : ""}</Text>
         </View>
-        {timerVisible ? <View style={styles.countdown}>{runCountDown()}</View> : null}
-        {!timerVisible ? <View style={styles.countdown}>{showResult()}</View> : null}
-        {timerVisible ? (
-          <View style={styles.answerView}>
-            {question && question[count].a ? (
-              <TouchableOpacity
-                style={answer === "a" ? styles.answerBoxSelected : styles.answerBox}
-                onPress={() => setAnswer("a")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>A</Text>
-                </View>
-                <Text>{question ? question[count].a : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].b ? (
-              <TouchableOpacity
-                style={answer === "b" ? styles.answerBoxSelected : styles.answerBox}
-                onPress={() => setAnswer("b")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>B</Text>
-                </View>
-                <Text>{question ? question[count].b : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].c ? (
-              <TouchableOpacity
-                style={answer === "c" ? styles.answerBoxSelected : styles.answerBox}
-                onPress={() => setAnswer("c")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>C</Text>
-                </View>
-                <Text>{question ? question[count].c : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].d ? (
-              <TouchableOpacity
-                style={answer === "d" ? styles.answerBoxSelected : styles.answerBox}
-                onPress={() => setAnswer("d")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>D</Text>
-                </View>
-                <Text>{question ? question[count].d : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].e ? (
-              <TouchableOpacity
-                style={answer === "e" ? styles.answerBoxSelected : styles.answerBox}
-                onPress={() => setAnswer("e")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>E</Text>
-                </View>
-                <Text>{question ? question[count].e : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-        ) : (
-          <View style={styles.answerView}>
-            {question && question[count].a ? (
-              <TouchableOpacity
-                disabled={true}
-                style={
-                  answer === "a"
-                    ? answer === question[count].answer
-                      ? styles.answerBoxSelected
-                      : styles.answerBoxWrong
-                    : question
-                    ? question[count].answer === "a"
-                      ? styles.answerBoxSelected
+        {timeTrial && timerVisible ? <View style={styles.countdown}>{runCountDown()}</View> : null}
+        {timeTrial && !timerVisible ? <View style={styles.countdown}>{showResult()}</View> : null}
+        {!timeTrial && isNext ? <View style={styles.countdown}>{showNoTrialResult()}</View> : null}
+        {!timeTrial && !isNext ? <View style={styles.countdown}>{submitAnswer()}</View> : null}
+        {timeTrial ? (
+          timerVisible ? (
+            <View style={styles.answerView}>
+              {question && question[count].a ? (
+                <TouchableOpacity
+                  style={answer === "a" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("a")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>A</Text>
+                  </View>
+                  <Text>{question ? question[count].a : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].b ? (
+                <TouchableOpacity
+                  style={answer === "b" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("b")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>B</Text>
+                  </View>
+                  <Text>{question ? question[count].b : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].c ? (
+                <TouchableOpacity
+                  style={answer === "c" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("c")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>C</Text>
+                  </View>
+                  <Text>{question ? question[count].c : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].d ? (
+                <TouchableOpacity
+                  style={answer === "d" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("d")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>D</Text>
+                  </View>
+                  <Text>{question ? question[count].d : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].e ? (
+                <TouchableOpacity
+                  style={answer === "e" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("e")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>E</Text>
+                  </View>
+                  <Text>{question ? question[count].e : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ) : (
+            <View style={styles.answerView}>
+              {question && question[count].a ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "a"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "a"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
                       : styles.answerBox
-                    : styles.answerBox
-                }
-                onPress={() => setAnswer("a")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>A</Text>
-                </View>
-                <Text>{question ? question[count].a : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].b ? (
-              <TouchableOpacity
-                disabled={true}
-                style={
-                  answer === "b"
-                    ? answer === question[count].answer
-                      ? styles.answerBoxSelected
-                      : styles.answerBoxWrong
-                    : question
-                    ? question[count].answer === "b"
-                      ? styles.answerBoxSelected
+                  }
+                  onPress={() => setAnswer("a")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>A</Text>
+                  </View>
+                  <Text>{question ? question[count].a : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].b ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "b"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "b"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
                       : styles.answerBox
-                    : styles.answerBox
-                }
-                onPress={() => setAnswer("b")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>B</Text>
-                </View>
-                <Text>{question ? question[count].b : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].c ? (
-              <TouchableOpacity
-                disabled={true}
-                style={
-                  answer === "c"
-                    ? answer === question[count].answer
-                      ? styles.answerBoxSelected
-                      : styles.answerBoxWrong
-                    : question
-                    ? question[count].answer === "c"
-                      ? styles.answerBoxSelected
+                  }
+                  onPress={() => setAnswer("b")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>B</Text>
+                  </View>
+                  <Text>{question ? question[count].b : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].c ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "c"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "c"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
                       : styles.answerBox
-                    : styles.answerBox
-                }
-                onPress={() => setAnswer("c")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>C</Text>
-                </View>
-                <Text>{question ? question[count].c : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].d ? (
-              <TouchableOpacity
-                disabled={true}
-                style={
-                  answer === "d"
-                    ? answer === question[count].answer
-                      ? styles.answerBoxSelected
-                      : styles.answerBoxWrong
-                    : question
-                    ? question[count].answer === "d"
-                      ? styles.answerBoxSelected
+                  }
+                  onPress={() => setAnswer("c")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>C</Text>
+                  </View>
+                  <Text>{question ? question[count].c : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].d ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "d"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "d"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
                       : styles.answerBox
-                    : styles.answerBox
-                }
-                onPress={() => setAnswer("d")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>D</Text>
-                </View>
-                <Text>{question ? question[count].d : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {question && question[count].e ? (
-              <TouchableOpacity
-                disabled={true}
-                style={
-                  answer === "e"
-                    ? answer === question[count].answer
-                      ? styles.answerBoxSelected
-                      : styles.answerBoxWrong
-                    : question
-                    ? question[count].answer === "e"
-                      ? styles.answerBoxSelected
+                  }
+                  onPress={() => setAnswer("d")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>D</Text>
+                  </View>
+                  <Text>{question ? question[count].d : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].e ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "e"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "e"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
                       : styles.answerBox
-                    : styles.answerBox
-                }
-                onPress={() => setAnswer("e")}
-              >
-                <View style={styles.circle}>
-                  <Text style={styles.circleText}>E</Text>
-                </View>
-                <Text>{question ? question[count].e : ""}</Text>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-        )}
+                  }
+                  onPress={() => setAnswer("e")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>E</Text>
+                  </View>
+                  <Text>{question ? question[count].e : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          )
+        ) : null}
+        {!timeTrial ? (
+          !isNext ? (
+            <View style={styles.answerView}>
+              {question && question[count].a ? (
+                <TouchableOpacity
+                  style={answer === "a" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("a")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>A</Text>
+                  </View>
+                  <Text>{question ? question[count].a : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].b ? (
+                <TouchableOpacity
+                  style={answer === "b" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("b")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>B</Text>
+                  </View>
+                  <Text>{question ? question[count].b : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].c ? (
+                <TouchableOpacity
+                  style={answer === "c" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("c")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>C</Text>
+                  </View>
+                  <Text>{question ? question[count].c : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].d ? (
+                <TouchableOpacity
+                  style={answer === "d" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("d")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>D</Text>
+                  </View>
+                  <Text>{question ? question[count].d : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].e ? (
+                <TouchableOpacity
+                  style={answer === "e" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("e")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>E</Text>
+                  </View>
+                  <Text>{question ? question[count].e : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ) : (
+            <View style={styles.answerView}>
+              {question && question[count].a ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "a"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "a"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
+                      : styles.answerBox
+                  }
+                  onPress={() => setAnswer("a")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>A</Text>
+                  </View>
+                  <Text>{question ? question[count].a : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].b ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "b"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "b"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
+                      : styles.answerBox
+                  }
+                  onPress={() => setAnswer("b")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>B</Text>
+                  </View>
+                  <Text>{question ? question[count].b : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].c ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "c"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "c"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
+                      : styles.answerBox
+                  }
+                  onPress={() => setAnswer("c")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>C</Text>
+                  </View>
+                  <Text>{question ? question[count].c : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].d ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "d"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "d"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
+                      : styles.answerBox
+                  }
+                  onPress={() => setAnswer("d")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>D</Text>
+                  </View>
+                  <Text>{question ? question[count].d : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+              {question && question[count].e ? (
+                <TouchableOpacity
+                  disabled={true}
+                  style={
+                    answer === "e"
+                      ? answer === question[count].answer
+                        ? styles.answerBoxSelected
+                        : styles.answerBoxWrong
+                      : question
+                      ? question[count].answer === "e"
+                        ? styles.answerBoxSelected
+                        : styles.answerBox
+                      : styles.answerBox
+                  }
+                  onPress={() => setAnswer("e")}
+                >
+                  <View style={styles.circle}>
+                    <Text style={styles.circleText}>E</Text>
+                  </View>
+                  <Text>{question ? question[count].e : ""}</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          )
+        ) : null}
       </View>
     </ScrollView>
   );
