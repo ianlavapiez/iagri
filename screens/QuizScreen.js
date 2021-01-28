@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import CountDown from "react-native-countdown-component";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import randomWords from "random-words";
 import { category } from "../data/category";
 
@@ -43,7 +44,21 @@ const QuizScreen = ({ navigation }) => {
     setTimerVisible(true);
   }, []);
 
-  useEffect(() => {}, [count]);
+  const storeScore = async (value) => {
+    if (timeTrial) {
+      try {
+        await AsyncStorage.setItem("timeTrialTotalScore", value);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        await AsyncStorage.setItem("notTimeTrialTotalScore", value);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
 
   const checkAnswer = () => {
     const words = randomWords({ exactly: 15, join: " " });
@@ -69,7 +84,11 @@ const QuizScreen = ({ navigation }) => {
   const checkNoTrialAnswer = () => {
     const words = randomWords({ exactly: 15, join: " " });
 
-    if (answer.toLowerCase() === question[count].answer.toLowerCase()) {
+    if (answer === "") {
+      return Alert.alert("No answer!", "Please select an answer below.");
+    }
+
+    if (answer === question[count].answer.toLowerCase()) {
       setScore(score + 1);
 
       Alert.alert("Correct!", "Your answer is correct!\n\nThe meaning of the answer is " + words + ".");
@@ -87,21 +106,51 @@ const QuizScreen = ({ navigation }) => {
     setIsNext(true);
   };
 
-  const nextQuestion = () => {
+  const getData = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+
+      if (value !== null) {
+        return value;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const nextQuestion = async () => {
     if (question.length > count + 1) {
       setCount(count + 1);
       setTimerVisible(true);
       return setAnswer("");
     }
 
+    const value = await getData("timeTrialTotalScore");
+
+    if (value !== null) {
+      storeScore(value + score + ",");
+    } else {
+      storeScore(score + ",");
+    }
+
     return navigation.navigate("Score", { score: score + " / " + totalScore });
   };
 
-  const nextNoTrialQuestion = () => {
+  const nextNoTrialQuestion = async () => {
     if (question.length > count + 1) {
       setCount(count + 1);
       setIsNext(false);
       return setAnswer("");
+    }
+
+    const value = await getData("notTimeTrialTotalScore");
+
+    if (value !== null) {
+      storeScore(value + score + ",");
+    } else {
+      storeScore(score + ",");
     }
 
     return navigation.navigate("Score", { score: score + " / " + totalScore });

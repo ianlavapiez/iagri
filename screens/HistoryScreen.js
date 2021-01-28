@@ -2,16 +2,17 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const HistoryScreen = ({ navigation }) => {
-  const history = navigation.state.params.history;
-
   return (
     <View style={styles.container}>
       <Text style={styles.description}>View History</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Menu")}>
-        <Text style={styles.buttonText}>Go Back to Main Menu</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("HistoryScore", { mode: true })}>
+        <Text style={styles.buttonText}>Time Trial Mode</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("History")}>
-        <Text style={styles.buttonText}>View History</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("HistoryScore", { mode: false })}>
+        <Text style={styles.buttonText}>Regular Mode</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+        <Text style={styles.buttonText}>Go Back</Text>
       </TouchableOpacity>
     </View>
   );

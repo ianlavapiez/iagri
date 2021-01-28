@@ -3,18 +3,17 @@ import * as FileSystem from "expo-file-system";
 import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as SQLite from "expo-sqlite";
 import { Asset } from "expo-asset";
-import agriculturalEconomicsArray from "../data/agriculturalEconomicsArray";
-import cropScienceArray from "../data/cropScienceArray";
 import { category } from "../data/category";
 
 const MenuScreen = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  // const [agriculturalEconomicsArray, setAgriculturalEconomicsArray] = useState([]);
-  // const [agriculturalExtensionArray, setAgriculturalExtensionArray] = useState([]);
-  // const [animalScienceArray, setAnimalScienceArray] = useState([]);
-  // const [cropProtectionArray, setCropProtectionArray] = useState([]);
-  // const [cropScienceArray, setCropScienceArray] = useState([]);
-  // const [soilScienceArray, setSoilScienceArray] = useState([]);
+  let db;
+
+  const [agriculturalEconomicsArray, setAgriculturalEconomicsArray] = useState([]);
+  const [agriculturalExtensionArray, setAgriculturalExtensionArray] = useState([]);
+  const [animalScienceArray, setAnimalScienceArray] = useState([]);
+  const [cropProtectionArray, setCropProtectionArray] = useState([]);
+  const [cropScienceArray, setCropScienceArray] = useState([]);
+  const [soilScienceArray, setSoilScienceArray] = useState([]);
 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -22,7 +21,7 @@ const MenuScreen = ({ navigation }) => {
       [array[i], array[j]] = [array[j], array[i]];
     }
 
-    return array.slice(0, 5);
+    return array;
   };
 
   const gameMode = (name, quiz) => {
@@ -41,53 +40,53 @@ const MenuScreen = ({ navigation }) => {
     );
   };
 
-  // useEffect(() => {
-  //   async function openDatabase() {
-  //     if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite")).exists) {
-  //       await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite");
-  //     }
-  //     await FileSystem.downloadAsync(
-  //       Asset.fromModule(require("../assets/database/iagri.sqlite3")).uri,
-  //       FileSystem.documentDirectory + "SQLite/iagri.db"
-  //     );
+  useEffect(() => {
+    async function openDatabase() {
+      if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite")).exists) {
+        await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite");
+      }
+      await FileSystem.downloadAsync(
+        Asset.fromModule(require("../assets/database/iagri.sqlite3")).uri,
+        FileSystem.documentDirectory + "SQLite/iagri.db"
+      );
 
-  //     db = SQLite.openDatabase("iagri.db");
+      db = SQLite.openDatabase("iagri.db");
 
-  //     db.transaction((tx) => {
-  //       tx.executeSql(`select * from agriculturaleconomics;`, [0], (_, { rows: { _array } }) =>
-  //         setAgriculturalEconomicsArray(_array)
-  //       );
-  //     });
+      db.transaction((tx) => {
+        tx.executeSql(`select * from agriculturaleconomics;`, [0], (_, { rows: { _array } }) =>
+          setAgriculturalEconomicsArray(_array)
+        );
+      });
 
-  //     db.transaction((tx) => {
-  //       tx.executeSql(`select * from agriculturalextension;`, [0], (_, { rows: { _array } }) =>
-  //         setAgriculturalExtensionArray(_array)
-  //       );
-  //     });
+      db.transaction((tx) => {
+        tx.executeSql(`select * from agriculturalextension;`, [0], (_, { rows: { _array } }) =>
+          setAgriculturalExtensionArray(_array)
+        );
+      });
 
-  //     db.transaction((tx) => {
-  //       tx.executeSql(`select * from animalscience;`, [0], (_, { rows: { _array } }) => setAnimalScienceArray(_array));
-  //     });
+      db.transaction((tx) => {
+        tx.executeSql(`select * from animalscience;`, [0], (_, { rows: { _array } }) => setAnimalScienceArray(_array));
+      });
 
-  //     db.transaction((tx) => {
-  //       tx.executeSql(`select * from cropprotection;`, [0], (_, { rows: { _array } }) =>
-  //         setCropProtectionArray(_array)
-  //       );
-  //     });
+      db.transaction((tx) => {
+        tx.executeSql(`select * from cropprotection;`, [0], (_, { rows: { _array } }) =>
+          setCropProtectionArray(_array)
+        );
+      });
 
-  //     db.transaction((tx) => {
-  //       tx.executeSql(`select * from cropscience;`, [0], (_, { rows: { _array } }) => setCropScienceArray(_array));
-  //     });
+      db.transaction((tx) => {
+        tx.executeSql(`select * from cropscience;`, [0], (_, { rows: { _array } }) => setCropScienceArray(_array));
+      });
 
-  //     db.transaction((tx) => {
-  //       tx.executeSql(`select * from soilscience;`, [0], (_, { rows: { _array } }) => setSoilScienceArray(_array));
-  //     });
+      db.transaction((tx) => {
+        tx.executeSql(`select * from soilscience;`, [0], (_, { rows: { _array } }) => setSoilScienceArray(_array));
+      });
 
-  //     return db;
-  //   }
+      return db;
+    }
 
-  //   openDatabase();
-  // }, []);
+    openDatabase();
+  }, []);
 
   return (
     <ScrollView>

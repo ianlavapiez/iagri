@@ -1,6 +1,7 @@
 import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import HistoryScoreScreen from "./screens/HistoryScoreScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MenuScreen from "./screens/MenuScreen";
@@ -38,6 +39,12 @@ const navigator = createStackNavigator(
       screen: HistoryScreen,
       navigationOptions: {
         title: "History",
+      },
+    },
+    HistoryScore: {
+      screen: HistoryScoreScreen,
+      navigationOptions: {
+        title: "History Score",
       },
     },
   },
