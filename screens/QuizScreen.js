@@ -157,7 +157,7 @@ const QuizScreen = ({ navigation }) => {
   };
 
   const runCountDown = () => {
-    return <CountDown until={5} timeToShow={["S"]} onFinish={() => checkAnswer()} size={20} />;
+    return <CountDown until={30} timeToShow={["S"]} onFinish={() => checkAnswer()} size={20} />;
   };
 
   const showResult = () => {

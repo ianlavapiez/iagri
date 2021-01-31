@@ -1,28 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, TouchableHighlight } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
 
 const HomeScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-
-  const selectFile = async () => {
-    const getFile = await DocumentPicker.getDocumentAsync();
-
-    if (
-      getFile.name === "agriculturalEconomicsArray.js" ||
-      getFile.name === "agriculturalExtensionArray.js" ||
-      getFile.name === "animalScienceArray.js" ||
-      getFile.name === "cropProtectionArray.js" ||
-      getFile.name === "cropScienceArray.js" ||
-      getFile.name === "soilScienceArray.js"
-    ) {
-      setTimeout(() => {
-        alert("File has successfully replaced.");
-      }, 3000);
-    } else {
-      alert("File is invalid.");
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -70,11 +50,6 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Menu")}>
         <Text style={styles.buttonText}>Let's Get Started</Text>
       </TouchableOpacity>
-      <View style={styles.upperContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-          <Text style={styles.buttonText}>Import Data</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
