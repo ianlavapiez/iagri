@@ -205,8 +205,8 @@ const QuizScreen = ({ navigation }) => {
             <View style={styles.answerView}>
               {question && question[count].a ? (
                 <TouchableOpacity
-                  style={answer === "a" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("a")}
+                  style={answer === "A" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("A")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>A</Text>
@@ -216,8 +216,8 @@ const QuizScreen = ({ navigation }) => {
               ) : null}
               {question && question[count].b ? (
                 <TouchableOpacity
-                  style={answer === "b" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("b")}
+                  style={answer === "B" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("B")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>B</Text>
@@ -227,8 +227,8 @@ const QuizScreen = ({ navigation }) => {
               ) : null}
               {question && question[count].c ? (
                 <TouchableOpacity
-                  style={answer === "c" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("c")}
+                  style={answer === "C" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("C")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>C</Text>
@@ -238,24 +238,13 @@ const QuizScreen = ({ navigation }) => {
               ) : null}
               {question && question[count].d ? (
                 <TouchableOpacity
-                  style={answer === "d" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("d")}
+                  style={answer === "D" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("D")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>D</Text>
                   </View>
                   <Text>{question ? question[count].d : ""}</Text>
-                </TouchableOpacity>
-              ) : null}
-              {question && question[count].e ? (
-                <TouchableOpacity
-                  style={answer === "e" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("e")}
-                >
-                  <View style={styles.circle}>
-                    <Text style={styles.circleText}>E</Text>
-                  </View>
-                  <Text>{question ? question[count].e : ""}</Text>
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -265,17 +254,17 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "a"
+                    answer === "A"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "a"
+                      ? question[count].answer === "A"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("a")}
+                  onPress={() => setAnswer("A")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>A</Text>
@@ -287,17 +276,17 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "b"
+                    answer === "B"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "b"
+                      ? question[count].answer === "B"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("b")}
+                  onPress={() => setAnswer("B")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>B</Text>
@@ -309,17 +298,17 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "c"
+                    answer === "C"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "c"
+                      ? question[count].answer === "C"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("c")}
+                  onPress={() => setAnswer("C")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>C</Text>
@@ -331,44 +320,22 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "d"
+                    answer === "D"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "d"
+                      ? question[count].answer === "D"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("d")}
+                  onPress={() => setAnswer("D")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>D</Text>
                   </View>
                   <Text>{question ? question[count].d : ""}</Text>
-                </TouchableOpacity>
-              ) : null}
-              {question && question[count].e ? (
-                <TouchableOpacity
-                  disabled={true}
-                  style={
-                    answer === "e"
-                      ? answer === question[count].answer
-                        ? styles.answerBoxSelected
-                        : styles.answerBoxWrong
-                      : question
-                      ? question[count].answer === "e"
-                        ? styles.answerBoxSelected
-                        : styles.answerBox
-                      : styles.answerBox
-                  }
-                  onPress={() => setAnswer("e")}
-                >
-                  <View style={styles.circle}>
-                    <Text style={styles.circleText}>E</Text>
-                  </View>
-                  <Text>{question ? question[count].e : ""}</Text>
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -379,8 +346,8 @@ const QuizScreen = ({ navigation }) => {
             <View style={styles.answerView}>
               {question && question[count].a ? (
                 <TouchableOpacity
-                  style={answer === "a" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("a")}
+                  style={answer === "A" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("A")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>A</Text>
@@ -390,8 +357,8 @@ const QuizScreen = ({ navigation }) => {
               ) : null}
               {question && question[count].b ? (
                 <TouchableOpacity
-                  style={answer === "b" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("b")}
+                  style={answer === "B" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("B")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>B</Text>
@@ -401,8 +368,8 @@ const QuizScreen = ({ navigation }) => {
               ) : null}
               {question && question[count].c ? (
                 <TouchableOpacity
-                  style={answer === "c" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("c")}
+                  style={answer === "C" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("C")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>C</Text>
@@ -412,24 +379,13 @@ const QuizScreen = ({ navigation }) => {
               ) : null}
               {question && question[count].d ? (
                 <TouchableOpacity
-                  style={answer === "d" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("d")}
+                  style={answer === "D" ? styles.answerBoxSelected : styles.answerBox}
+                  onPress={() => setAnswer("D")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>D</Text>
                   </View>
                   <Text>{question ? question[count].d : ""}</Text>
-                </TouchableOpacity>
-              ) : null}
-              {question && question[count].e ? (
-                <TouchableOpacity
-                  style={answer === "e" ? styles.answerBoxSelected : styles.answerBox}
-                  onPress={() => setAnswer("e")}
-                >
-                  <View style={styles.circle}>
-                    <Text style={styles.circleText}>E</Text>
-                  </View>
-                  <Text>{question ? question[count].e : ""}</Text>
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -439,17 +395,17 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "a"
+                    answer === "A"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "a"
+                      ? question[count].answer === "A"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("a")}
+                  onPress={() => setAnswer("A")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>A</Text>
@@ -461,17 +417,17 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "b"
+                    answer === "B"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "b"
+                      ? question[count].answer === "B"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("b")}
+                  onPress={() => setAnswer("B")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>B</Text>
@@ -483,17 +439,17 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "c"
+                    answer === "C"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "c"
+                      ? question[count].answer === "C"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("c")}
+                  onPress={() => setAnswer("C")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>C</Text>
@@ -505,44 +461,22 @@ const QuizScreen = ({ navigation }) => {
                 <TouchableOpacity
                   disabled={true}
                   style={
-                    answer === "d"
+                    answer === "D"
                       ? answer === question[count].answer
                         ? styles.answerBoxSelected
                         : styles.answerBoxWrong
                       : question
-                      ? question[count].answer === "d"
+                      ? question[count].answer === "D"
                         ? styles.answerBoxSelected
                         : styles.answerBox
                       : styles.answerBox
                   }
-                  onPress={() => setAnswer("d")}
+                  onPress={() => setAnswer("D")}
                 >
                   <View style={styles.circle}>
                     <Text style={styles.circleText}>D</Text>
                   </View>
                   <Text>{question ? question[count].d : ""}</Text>
-                </TouchableOpacity>
-              ) : null}
-              {question && question[count].e ? (
-                <TouchableOpacity
-                  disabled={true}
-                  style={
-                    answer === "e"
-                      ? answer === question[count].answer
-                        ? styles.answerBoxSelected
-                        : styles.answerBoxWrong
-                      : question
-                      ? question[count].answer === "e"
-                        ? styles.answerBoxSelected
-                        : styles.answerBox
-                      : styles.answerBox
-                  }
-                  onPress={() => setAnswer("e")}
-                >
-                  <View style={styles.circle}>
-                    <Text style={styles.circleText}>E</Text>
-                  </View>
-                  <Text>{question ? question[count].e : ""}</Text>
                 </TouchableOpacity>
               ) : null}
             </View>

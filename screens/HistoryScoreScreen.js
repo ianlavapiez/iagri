@@ -13,8 +13,6 @@ const HistoryScoreScreen = ({ navigation }) => {
       try {
         const value = await AsyncStorage.getItem(mode ? "timeTrialTotalScore" : "notTimeTrialTotalScore");
 
-        console.log(value);
-
         if (value !== null) {
           setScore(value.split(","));
         } else {
