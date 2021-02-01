@@ -63,7 +63,7 @@ const QuizScreen = ({ navigation }) => {
   const checkAnswer = () => {
     const words = randomWords({ exactly: 15, join: " " });
 
-    if (answer.toLowerCase() === question[count].answer.toLowerCase()) {
+    if (answer === question[count].answer) {
       setScore(score + 1);
 
       Alert.alert("Correct!", "Your answer is correct!\n\nThe meaning of the answer is " + words + ".");
@@ -88,7 +88,7 @@ const QuizScreen = ({ navigation }) => {
       return Alert.alert("No answer!", "Please select an answer below.");
     }
 
-    if (answer === question[count].answer.toLowerCase()) {
+    if (answer === question[count].answer) {
       setScore(score + 1);
 
       Alert.alert("Correct!", "Your answer is correct!\n\nThe meaning of the answer is " + words + ".");

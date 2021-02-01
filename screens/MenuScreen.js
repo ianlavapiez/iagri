@@ -53,33 +53,51 @@ const MenuScreen = ({ navigation }) => {
       db = SQLite.openDatabase("iagri.db");
 
       db.transaction((tx) => {
-        tx.executeSql(`select * from agriculturaleconomics;`, [0], (_, { rows: { _array } }) =>
-          setAgriculturalEconomicsArray(_array)
+        tx.executeSql(
+          "select * from agriculturaleconomics",
+          (_, { rows: { _array } }) => setAgriculturalEconomicsArray(_array),
+          (t, error) => setAgriculturalEconomicsArray(error.rows["_array"])
+        );
+      });
+
+      // db.transaction((tx) => {
+      //   tx.executeSql(
+      //     "select * from agriculturalextension",
+      //     (_, { rows: { _array } }) => setAgriculturalExtensionArray(_array),
+      //     (t, error) => setAgriculturalExtensionArray(error.rows["_array"])
+      //   );
+      // });
+
+      db.transaction((tx) => {
+        tx.executeSql(
+          "select * from animalscience",
+          (_, { rows: { _array } }) => setAnimalScienceArray(_array),
+          (t, error) => setAnimalScienceArray(error.rows["_array"])
         );
       });
 
       db.transaction((tx) => {
-        tx.executeSql(`select * from agriculturalextension;`, [0], (_, { rows: { _array } }) =>
-          setAgriculturalExtensionArray(_array)
+        tx.executeSql(
+          "select * from cropprotection",
+          (_, { rows: { _array } }) => setCropProtectionArray(_array),
+          (t, error) => setCropProtectionArray(error.rows["_array"])
         );
       });
 
       db.transaction((tx) => {
-        tx.executeSql(`select * from animalscience;`, [0], (_, { rows: { _array } }) => setAnimalScienceArray(_array));
-      });
-
-      db.transaction((tx) => {
-        tx.executeSql(`select * from cropprotection;`, [0], (_, { rows: { _array } }) =>
-          setCropProtectionArray(_array)
+        tx.executeSql(
+          "select * from cropscience",
+          (_, { rows: { _array } }) => setCropScienceArray(_array),
+          (t, error) => setCropScienceArray(error.rows["_array"])
         );
       });
 
       db.transaction((tx) => {
-        tx.executeSql(`select * from cropscience;`, [0], (_, { rows: { _array } }) => setCropScienceArray(_array));
-      });
-
-      db.transaction((tx) => {
-        tx.executeSql(`select * from soilscience;`, [0], (_, { rows: { _array } }) => setSoilScienceArray(_array));
+        tx.executeSql(
+          "select * from soilscience",
+          (_, { rows: { _array } }) => setSoilScienceArray(_array),
+          (t, error) => setSoilScienceArray(error.rows["_array"])
+        );
       });
 
       return db;
