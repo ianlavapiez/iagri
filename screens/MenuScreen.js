@@ -60,13 +60,13 @@ const MenuScreen = ({ navigation }) => {
         );
       });
 
-      // db.transaction((tx) => {
-      //   tx.executeSql(
-      //     "select * from agriculturalextension",
-      //     (_, { rows: { _array } }) => setAgriculturalExtensionArray(_array),
-      //     (t, error) => setAgriculturalExtensionArray(error.rows["_array"])
-      //   );
-      // });
+      db.transaction((tx) => {
+        tx.executeSql(
+          "select * from agriculturalextension",
+          (_, { rows: { _array } }) => setAgriculturalExtensionArray(_array),
+          (t, error) => setAgriculturalExtensionArray(error.rows["_array"])
+        );
+      });
 
       db.transaction((tx) => {
         tx.executeSql(
