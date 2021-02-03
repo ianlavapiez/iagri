@@ -106,15 +106,6 @@ const MenuScreen = ({ navigation }) => {
     openDatabase();
   }, []);
 
-  console.log(
-    agriculturalEconomicsArray.length,
-    agriculturalExtensionArray.length,
-    animalScienceArray.length,
-    cropProtectionArray.length,
-    cropScienceArray.length,
-    soilScienceArray.length
-  );
-
   return (
     <ScrollView>
       <View style={styles.container}>

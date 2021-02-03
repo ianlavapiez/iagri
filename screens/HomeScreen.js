@@ -17,38 +17,47 @@ const HomeScreen = ({ navigation }) => {
         >
           <View style={styles.containerCenter}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Take note that the import data only accepts the following js file names:
+              <Text style={styles.modalText}>Important notes to consider before using this application:</Text>
+              <Text style={styles.descText}>
+                1. This application has 5 topics to choose from: <Text style={styles.boldMe}>Animal Science</Text>,
+                <Text style={styles.boldMe}>Agricultural Extension and Communication</Text>,{" "}
+                <Text style={styles.boldMe}>Crop Protection</Text>, <Text style={styles.boldMe}>Crop Science</Text>,{" "}
+                <Text style={styles.boldMe}>Economics and Agricultural Marketing</Text>, and{" "}
+                <Text style={styles.boldMe}>Soil Science</Text>.
               </Text>
-              <Text style={styles.descText}>1. agriculturalEconomicsArray.js</Text>
-              <Text style={styles.descText}>2. agriculturalExtensionArray.js</Text>
-              <Text style={styles.descText}>3. animalScienceArray.js</Text>
-              <Text style={styles.descText}>4. cropProtectionArray.js</Text>
-              <Text style={styles.descText}>5. cropScienceArray.js</Text>
-              <Text style={styles.descText}>6. soilScienceArray.js</Text>
+              <Text style={styles.descText}>
+                2. When choosing a category, you will be asked if what <Text style={styles.boldMe}>Game Mode</Text> are
+                you will to choose, either with time trial or not.
+              </Text>
+              <Text style={styles.descText}>3. In time trial, you will only have 30 seconds to answer a question.</Text>
+              <Text style={styles.descText}>
+                4. Without time trial, you can patiently choose an answer at your own time.
+              </Text>
+              <Text style={styles.descText}>
+                5. In every question, there's a corresponding message if your answer is correct or not and there will be
+                a short explanation about the correct answer.
+              </Text>
+              <Text style={styles.descText}>
+                6. After you take a quiz, you will be redirected to your score and you can also view your history score.
+              </Text>
               <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => selectFile()}
+                onPress={() => setModalVisible(false)}
               >
-                <Text style={styles.textStyle}>Import Data</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "maroon", marginTop: 10 }}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={styles.errorStyle}>Exit</Text>
+                <Text style={styles.textStyle}>I Understand</Text>
               </TouchableHighlight>
             </View>
           </View>
         </Modal>
       </View>
       <Image style={styles.logo} source={require("../assets/home-logo.png")} />
-      <Text style={styles.title}>iAgri</Text>
-      <Text style={styles.description}>An Agriculturist Board Exam E-Reviewer</Text>
+      <Text style={styles.title}>iReview</Text>
+      <Text style={styles.description}>An ISCOF Board Exam E-Reviewer</Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Menu")}>
         <Text style={styles.buttonText}>Let's Get Started</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
+        <Text style={styles.buttonText}>Guidelines</Text>
       </TouchableOpacity>
     </View>
   );
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
+    alignItems: "flex-start",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -128,9 +137,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  modalButtonView: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
   openButton: {
     backgroundColor: "#F194FF",
-    borderRadius: 20,
+    borderRadius: 5,
     padding: 10,
     elevation: 2,
   },
@@ -146,11 +161,14 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center",
+    textAlign: "left",
+    fontWeight: "bold",
   },
   descText: {
     marginBottom: 15,
-    textAlign: "left",
+  },
+  boldMe: {
+    fontWeight: "bold",
   },
 });
 

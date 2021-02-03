@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     textAlign: "justify",
-    fontSize: 12,
+    fontSize: 16,
     color: "black",
   },
   answerView: {
